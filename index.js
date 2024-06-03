@@ -69,9 +69,11 @@ const sessionStore = MongoStore.create({
   collection: "sessions",
 });
 
+const mySecret = "demo1";
+
 app.use(
   session({
-    // secret: mySecret,
+    secret: mySecret,
     store: sessionStore,
   })
 );
