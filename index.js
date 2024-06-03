@@ -35,25 +35,29 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 
 //MongoStore stores session cookies
+let store = new MongoStore({
+  mongoUrl: process.env.MONGODB_URL,
+  collection: "session",
+});
+
 app.use(
   session({
-    name: "MovieApp",
-    // TODO change the secret before deployment in production mode
-    secret: "Best",
-    saveUninitialized: false,
+    secret: "process.env.COOKIE_SECRET",
     resave: false,
+    saveUninitialized: false,
+    store: store,
     cookie: {
       maxAge: 1000 * 60 * 100,
     },
-    store: MongoStore.create(
-      {
-        mongoUrl: process.env.MONGODB_URL,
-        autoRemove: "disabled",
-      },
-      function (err) {
-        console.log(err || "Connection is fine");
-      }
-    ),
+    // store: MongoStore.create(
+    //   {
+    //     mongoUrl: process.env.MONGODB_URL,
+    //     autoRemove: "disabled",
+    //   },
+    //   function (err) {
+    //     console.log(err || "Connection is fine");
+    //   }
+    // ),
   })
 );
 
