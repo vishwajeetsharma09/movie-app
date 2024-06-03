@@ -35,29 +35,44 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 
 //MongoStore stores session cookies
-let store = new MongoStore({
-  mongoUrl: process.env.MONGODB_URL,
-  collection: "session",
+
+// app.use(
+//   session({
+//     secret: "Best",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       maxAge: 1000 * 60 * 100,
+//     },
+//     store: MongoStore.create(
+//       {
+//         mongoUrl: process.env.MONGODB_URL,
+//         autoRemove: "disabled",
+//       },
+//       function (err) {
+//         console.log(err || "Connection is fine");
+//       }
+//     ),
+//   })
+// );
+
+const mongoClientPromise = new Promise((resolve) => {
+  mongoose.connection.on("connected", () => {
+    const client = mongoose.connection.getClient();
+    resolve(client);
+  });
+});
+
+const sessionStore = MongoStore.create({
+  clientPromise: mongoClientPromise,
+  dbName: "test",
+  collection: "sessions",
 });
 
 app.use(
   session({
-    secret: "process.env.COOKIE_SECRET",
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: {
-      maxAge: 1000 * 60 * 100,
-    },
-    // store: MongoStore.create(
-    //   {
-    //     mongoUrl: process.env.MONGODB_URL,
-    //     autoRemove: "disabled",
-    //   },
-    //   function (err) {
-    //     console.log(err || "Connection is fine");
-    //   }
-    // ),
+    // secret: mySecret,
+    store: sessionStore,
   })
 );
 
