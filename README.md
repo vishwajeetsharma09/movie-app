@@ -1,5 +1,4 @@
-FASAL ASSIGNMENT
-## https://movie-library-kt8z.onrender.com/
+
 Create a movie library web application with the below features using any tech stack of your choice -
 
 1.The application must have user authentication ( Sign In/ Sign Up )
@@ -103,3 +102,5 @@ Install `npm install env` for .env file
 6. Playlist is completely private and user can see it after login only
 7. Without sign in user can search movie and get details but cannot add to playlist
 
+
+#demo

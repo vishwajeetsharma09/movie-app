@@ -1,70 +1,72 @@
 require("dotenv").config();
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const express = require('express');
+const express = require("express");
 const app = express();
 const port = 8000;
 
 // used for session cookie
-const session = require('express-session');
-const passport = require('passport');
-const passportLocal = require('./config/passport-local-startergy');
+const session = require("express-session");
+const passport = require("passport");
+const passportLocal = require("./config/passport-local-startergy");
 //Mongo-store
-const MongoStore = require('connect-mongo')
-
+const MongoStore = require("connect-mongo");
 
 //cookie-parser
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 //database
-const db = require('./config/mongoose');
+const db = require("./config/mongoose");
 //include layouts
-const expressLayouts = require('express-ejs-layouts');
+const expressLayouts = require("express-ejs-layouts");
 app.use(expressLayouts);
 
 //for styling static files
-app.set('layout extractStyles', true);
-app.set('layout extractScripts', true);
+app.set("layout extractStyles", true);
+app.set("layout extractScripts", true);
 
 //static files
-app.use(express.static('./assets'));
+app.use(express.static("./assets"));
 
 // EJS Set-up
-app.set('view engine','ejs');
-app.set('views','./views');
+app.set("view engine", "ejs");
+app.set("views", "./views");
 
 //MongoStore stores session cookies
-app.use(session({
-    name: 'MovieApp',
+app.use(
+  session({
+    name: "MovieApp",
     // TODO change the secret before deployment in production mode
-    secret: 'blahsomething',
+    secret: "Best",
     saveUninitialized: false,
     resave: false,
     cookie: {
-        maxAge: (1000 * 60 * 100)
+      maxAge: 1000 * 60 * 100,
     },
-    store : MongoStore.create(
-        {
-            mongoUrl : process.env.MONGODB_URL, 
-            autoRemove : 'disabled'
-        },function(err){
-            console.log(err || "Connection is fine");
-        }
-    )
-}));
+    store: MongoStore.create(
+      {
+        mongoUrl: process.env.MONGODB_URL,
+        autoRemove: "disabled",
+      },
+      function (err) {
+        console.log(err || "Connection is fine");
+      }
+    ),
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
 
-app.use('/',require('./routes'));
+app.use("/", require("./routes"));
 
-app.listen(port,function(err){
-    if(err){
-        console.log("Error: ",err);
-        return;
-    }
-    console.log("Successfully running on port",port);
-})
+app.listen(port, function (err) {
+  if (err) {
+    console.log("Error: ", err);
+    return;
+  }
+  console.log("Successfully running on port", port);
+});
