@@ -27,7 +27,7 @@
         <%if (locals.user){%>
         <h1>Playlist</h1>
         <%}%>
-        <%for(list of movies){%>
+        <% movies.forEach(function(movie) { %>
             <%if (locals.user && locals.user.id == list.user.id){%>
             <ul>
                 <li><%= list.movie %></li>
@@ -37,7 +37,7 @@
                 </li>
             </ul>
             <%}%>
-        <%}%>
+        <%})%>
     </div>
 
 </div>
