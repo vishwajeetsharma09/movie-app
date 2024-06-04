@@ -24,22 +24,21 @@
     </div>
     
     <div class="movies-list">
-        <% if (locals.user) { %>
-          <h1>Playlist</h1>
-          <% movies.forEach(function(movie) { %>
-            <% if (locals.user && locals.user.id == movie.user.id) { %>
-              <ul>
-                <li><%= movie.title %></li>
-                <li>
-                  <a href="/movies/destroy/<%= movie._id %>">
+        <%if (locals.user){%>
+        <h1>Playlist</h1>
+        <%}%>
+        <%for(list of movies){%>
+            <%if (locals.user && locals.user.id == list.user.id){%>
+            <ul>
+                <li><%= list.movie %></li>
+                <li><a href="/movies/destroy/<%= list._id %>">
                     <i class="material-icons">delete</i>
-                  </a>
+                    </a>
                 </li>
-              </ul>
-            <% } %>
-          <% }); %>
-        <% } %>
-      </div>
+            </ul>
+            <%}%>
+        <%}%>
+    </div>
 
 </div>
 <script src="/scripts/script.js"></script>
